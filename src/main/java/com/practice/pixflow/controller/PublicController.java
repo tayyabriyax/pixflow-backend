@@ -1,5 +1,6 @@
 package com.practice.pixflow.controller;
 
+import com.practice.pixflow.dto.SignInDTO;
 import com.practice.pixflow.dto.SignUpDTO;
 import com.practice.pixflow.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,15 @@ public class PublicController {
         try{
             userService.saveUser(user);
             return new ResponseEntity<>("User is Signed Up Successfully!", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
+
+    @PostMapping("/sign-in")
+    public ResponseEntity<?> signIp(@RequestBody SignInDTO user){
+        try{
+            return new ResponseEntity<>("JWT Token : " + userService.login(user), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
