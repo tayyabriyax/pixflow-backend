@@ -1,8 +1,11 @@
 package com.practice.pixflow.dto;
 
+import com.practice.pixflow.entity.PostEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -16,5 +19,7 @@ public class UserDetailsDTO {
     private String profilePic;
 
     private String about;
+
+    private List<PostDTO> posts;
 
 }

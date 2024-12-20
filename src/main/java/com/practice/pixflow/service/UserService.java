@@ -1,9 +1,6 @@
 package com.practice.pixflow.service;
 
-import com.practice.pixflow.dto.SignInDTO;
-import com.practice.pixflow.dto.SignUpDTO;
-import com.practice.pixflow.dto.UpdateUserDTO;
-import com.practice.pixflow.dto.UserDetailsDTO;
+import com.practice.pixflow.dto.*;
 import com.practice.pixflow.entity.UserEntity;
 import com.practice.pixflow.repository.UserRepository;
 import com.practice.pixflow.util.JwtUtil;
@@ -19,6 +16,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class UserService {
@@ -86,6 +85,15 @@ public class UserService {
         userDetails.setEmail(existedUser.getEmail());
         userDetails.setProfilePic(existedUser.getProfilePic());
         userDetails.setAbout(existedUser.getAbout());
+
+        List<PostDTO> posts = existedUser.getPosts().stream().map(x -> {
+            PostDTO postsDTO = new PostDTO();
+            postsDTO.setId(x.getId());
+            postsDTO.setCaption(x.getCaption());
+            postsDTO.setUrl(x.getUrl());
+            return postsDTO;
+        }).toList();
+        userDetails.setPosts(posts);
 
         return userDetails;
     }

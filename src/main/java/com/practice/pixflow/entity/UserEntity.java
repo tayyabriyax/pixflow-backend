@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -30,5 +33,14 @@ public class UserEntity {
 
     @Column(name = "about")
     private String about;
+
+    @Column(name = "posts")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostEntity> posts = new ArrayList<>();
+
+    public void addPost(PostEntity post) {
+        posts.add(post);
+        post.setUser(this);
+    }
 
 }
