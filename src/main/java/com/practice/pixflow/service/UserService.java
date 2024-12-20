@@ -3,6 +3,7 @@ package com.practice.pixflow.service;
 import com.practice.pixflow.dto.SignInDTO;
 import com.practice.pixflow.dto.SignUpDTO;
 import com.practice.pixflow.dto.UpdateUserDTO;
+import com.practice.pixflow.dto.UserDetailsDTO;
 import com.practice.pixflow.entity.UserEntity;
 import com.practice.pixflow.repository.UserRepository;
 import com.practice.pixflow.util.JwtUtil;
@@ -73,6 +74,20 @@ public class UserService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public UserDetailsDTO getUserDetails(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+
+        UserEntity existedUser = userRepository.findUserByUserName(userName);
+        UserDetailsDTO userDetails = new UserDetailsDTO();
+        userDetails.setUserName(existedUser.getUserName());
+        userDetails.setEmail(existedUser.getEmail());
+        userDetails.setProfilePic(existedUser.getProfilePic());
+        userDetails.setAbout(existedUser.getAbout());
+
+        return userDetails;
     }
 
 }

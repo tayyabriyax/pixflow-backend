@@ -15,7 +15,7 @@ public class UserController {
     @Autowired
     public UserService userService;
 
-    @PostMapping("/update-user")
+    @PutMapping("/update-user")
     public ResponseEntity<?> updateUser(@RequestParam("userName") String userName,
                                         @RequestParam("email") String email,
                                         @RequestParam("password") String password,
@@ -32,6 +32,15 @@ public class UserController {
             return new ResponseEntity<>("User is Successfully Updated!", HttpStatus.OK);
         } catch (Exception e) {
             return  new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
+
+    @GetMapping("/user-details")
+    public ResponseEntity<?> getUserDetails(){
+        try{
+            return new ResponseEntity<>(userService.getUserDetails(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
