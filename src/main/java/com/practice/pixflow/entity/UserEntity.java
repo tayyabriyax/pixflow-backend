@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Data
@@ -39,14 +38,8 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostEntity> posts = new ArrayList<>();
 
-    public void updatePost(PostEntity post) {
-        posts.forEach(x -> {
-            if(Objects.equals(x.getId(), post.getId())){
-                 x.setCaption(post.getCaption());
-                 x.setUrl(post.getUrl());
-            }
-        });
-        post.setUser(this);
+    public UserEntity(Integer id) {
+        this.id = id;
     }
 
 }
