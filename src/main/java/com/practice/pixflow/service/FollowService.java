@@ -1,5 +1,9 @@
 package com.practice.pixflow.service;
 
+import com.practice.pixflow.dto.FollowerDTO;
+import com.practice.pixflow.dto.FollowingDTO;
+import com.practice.pixflow.dto.PostDTO;
+import com.practice.pixflow.dto.UserDetailsDTO;
 import com.practice.pixflow.entity.FollowEntity;
 import com.practice.pixflow.entity.UserEntity;
 import com.practice.pixflow.repository.FollowRepository;
@@ -21,7 +25,7 @@ public class FollowService {
     @Autowired
     public UserRepository userRepository;
 
-    public void followUser(Integer followingId){
+    public void followUser(Integer followingId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
 
@@ -34,7 +38,7 @@ public class FollowService {
     }
 
     @Transactional
-    public void unFollowUser(Integer followingId){
+    public void unFollowUser(Integer followingId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
 
@@ -43,22 +47,65 @@ public class FollowService {
         followRepository.deleteByFollowerIdAndFollowingId(new UserEntity(followerId), new UserEntity(followingId));
     }
 
-    public List<FollowEntity> getFollowers(){
+    public List<FollowerDTO> getFollowers() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
 
         Integer followingId = userRepository.findUserByUserName(userName).getId();
 
-        return followRepository.findByFollowingId(new UserEntity(followingId));
+        List<FollowEntity> followers = followRepository.findByFollowingId(new UserEntity(followingId));
+
+        return followers.stream()
+                .map(follower -> {
+                    UserEntity user = follower.getFollowerId();
+
+                    List<PostDTO> posts = user.getPosts().stream()
+                            .map(post -> new PostDTO(post.getId(), post.getCaption(), post.getUrl()))
+                            .toList();
+
+                    UserDetailsDTO userDetailsDTO = new UserDetailsDTO(
+                            user.getUserName(),
+                            user.getEmail(),
+                            user.getProfilePic(),
+                            user.getAbout(),
+                            posts
+                    );
+
+                    return new FollowerDTO(follower.getId(), userDetailsDTO);
+                })
+                .toList();
+
     }
 
-    public List<FollowEntity> getFollowing(){
+    public List<FollowingDTO> getFollowing() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
 
         Integer followerId = userRepository.findUserByUserName(userName).getId();
 
-        return followRepository.findByFollowerId(new UserEntity(followerId));
+        List<FollowEntity> following = followRepository.findByFollowerId(new UserEntity(followerId));
+
+        return following.stream()
+                .map(x -> {
+                   UserEntity user = x.getFollowingId();
+
+                   List<PostDTO> posts = user.getPosts()
+                           .stream()
+                           .map(post -> new PostDTO(post.getId(), post.getCaption(), post.getUrl()))
+                           .toList();
+
+                   UserDetailsDTO userDetailsDTO = new UserDetailsDTO(
+                           user.getUserName(),
+                           user.getEmail(),
+                           user.getProfilePic(),
+                           user.getAbout(),
+                           posts
+                   );
+
+                   return new FollowingDTO(x.getId(), userDetailsDTO);
+                })
+                .toList();
+
     }
 
 }
