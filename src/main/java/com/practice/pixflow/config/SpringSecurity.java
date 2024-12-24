@@ -33,6 +33,8 @@ public class SpringSecurity {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user", "/user/**").authenticated()
                         .requestMatchers("/post", "/post/**").authenticated()
+                        .requestMatchers("/follow", "/follow/**").authenticated()
+                        .requestMatchers("/comment", "/comment/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
