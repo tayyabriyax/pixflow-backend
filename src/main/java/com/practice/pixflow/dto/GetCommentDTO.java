@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentDTO {
+public class GetCommentDTO {
 
     private String content;
+
+    private UserDetailsDTO userId;
 
 }

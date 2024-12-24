@@ -38,4 +38,8 @@ public class PostEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
+    public PostEntity(Integer id) {
+        this.id = id;
+    }
+
 }
