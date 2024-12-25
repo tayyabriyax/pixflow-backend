@@ -4,10 +4,7 @@ import com.practice.pixflow.service.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/like")
@@ -21,6 +18,16 @@ public class LikeController {
         try{
             likeService.likePost(postId);
             return new ResponseEntity<>("Post Liked !", HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/unlike-post/{post_id}")
+    public ResponseEntity<?> unlikePost(@PathVariable(name = "post_id") Integer postId){
+        try{
+            likeService.unlikePost(postId);
+            return new ResponseEntity<>("Post Unliked !", HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

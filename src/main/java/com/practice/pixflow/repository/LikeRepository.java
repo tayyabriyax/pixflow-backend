@@ -7,6 +7,8 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface LikeRepository extends CrudRepository<LikeEntity, Integer> {
 
-    boolean existsByUserIdAndPostId(UserEntity userId, PostEntity postId);
+    boolean existsByUserIdAndPostId(UserEntity user, PostEntity post);
+
+    void deleteByUserIdAndPostId(UserEntity user, PostEntity post);
 
 }
