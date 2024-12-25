@@ -35,6 +35,7 @@ public class SpringSecurity {
                         .requestMatchers("/post", "/post/**").authenticated()
                         .requestMatchers("/follow", "/follow/**").authenticated()
                         .requestMatchers("/comment", "/comment/**").authenticated()
+                        .requestMatchers("/like", "/like/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
