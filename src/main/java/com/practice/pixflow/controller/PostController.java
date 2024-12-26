@@ -54,4 +54,13 @@ public class PostController {
         }
     }
 
+    @GetMapping("/get-post")
+    public ResponseEntity<?> getPosts() {
+        try {
+            return new ResponseEntity<>(postService.getPosts(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
+
 }

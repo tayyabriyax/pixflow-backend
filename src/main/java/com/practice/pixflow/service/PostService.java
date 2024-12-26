@@ -1,9 +1,10 @@
 package com.practice.pixflow.service;
 
-import com.practice.pixflow.dto.CreatePostDTO;
-import com.practice.pixflow.dto.EditPostDTO;
+import com.practice.pixflow.dto.*;
+import com.practice.pixflow.entity.FollowEntity;
 import com.practice.pixflow.entity.PostEntity;
 import com.practice.pixflow.entity.UserEntity;
+import com.practice.pixflow.repository.FollowRepository;
 import com.practice.pixflow.repository.PostRepository;
 import com.practice.pixflow.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.List;
 import java.util.Objects;
 
 @Component
@@ -24,8 +26,11 @@ public class PostService {
     @Autowired
     public UserRepository userRepository;
 
-    public void createPost(CreatePostDTO post, MultipartFile postFile){
-        try{
+    @Autowired
+    public FollowRepository followRepository;
+
+    public void createPost(CreatePostDTO post, MultipartFile postFile) {
+        try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userName = authentication.getName();
 
@@ -49,8 +54,8 @@ public class PostService {
         }
     }
 
-    public void updatePost(EditPostDTO post, MultipartFile postFile){
-        try{
+    public void updatePost(EditPostDTO post, MultipartFile postFile) {
+        try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userName = authentication.getName();
 
@@ -67,7 +72,7 @@ public class PostService {
             newPost.setUrl(filePath);
 
             existedUser.getPosts().forEach(x -> {
-                if(Objects.equals(x.getId(), newPost.getId())){
+                if (Objects.equals(x.getId(), newPost.getId())) {
                     x.setCaption(newPost.getCaption());
                     x.setUrl(newPost.getUrl());
                 }
@@ -80,8 +85,8 @@ public class PostService {
         }
     }
 
-    public void removePost(Integer id){
-        try{
+    public void removePost(Integer id) {
+        try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userName = authentication.getName();
 
@@ -93,6 +98,23 @@ public class PostService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<PostDTO> getPosts() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+
+        Integer followerId = userRepository.findUserByUserName(userName).getId();
+
+        List<FollowEntity> followingList = followRepository.findByFollowerId(new UserEntity(followerId));
+
+        return followingList.stream()
+                .flatMap(following -> {
+                    UserEntity userEntity = following.getFollowingId();
+                    return userEntity.getPosts().stream()
+                            .map(post -> new PostDTO(post.getId(), post.getCaption(), post.getUrl()));
+                })
+                .toList();
     }
 
 }
