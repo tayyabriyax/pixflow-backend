@@ -11,4 +11,6 @@ public interface LikeRepository extends CrudRepository<LikeEntity, Integer> {
 
     void deleteByUserIdAndPostId(UserEntity user, PostEntity post);
 
+    Integer countByPostId(PostEntity post);
+
 }

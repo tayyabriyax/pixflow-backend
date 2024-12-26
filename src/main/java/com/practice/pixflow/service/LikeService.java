@@ -52,4 +52,11 @@ public class LikeService {
         likeRepository.deleteByUserIdAndPostId(user, post);
     }
 
+    public Integer likesCount(Integer postId){
+        PostEntity post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found with id: " + postId));
+
+        return likeRepository.countByPostId(post);
+    }
+
 }
