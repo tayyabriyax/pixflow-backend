@@ -38,6 +38,10 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostEntity> posts = new ArrayList<>();
 
+    @Column(name = "notifications")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostEntity> notifications = new ArrayList<>();
+
     public UserEntity(Integer id) {
         this.id = id;
     }
