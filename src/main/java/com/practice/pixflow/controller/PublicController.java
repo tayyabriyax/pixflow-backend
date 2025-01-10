@@ -3,6 +3,7 @@ package com.practice.pixflow.controller;
 import com.practice.pixflow.dto.SignInDTO;
 import com.practice.pixflow.dto.SignUpDTO;
 import com.practice.pixflow.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/public")
+@Tag(name = "Public")
 public class PublicController {
 
     @Autowired

@@ -3,6 +3,7 @@ package com.practice.pixflow.controller;
 import com.practice.pixflow.dto.CreatePostDTO;
 import com.practice.pixflow.dto.EditPostDTO;
 import com.practice.pixflow.service.PostService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/post")
+@Tag(name = "Post")
 public class PostController {
 
     @Autowired

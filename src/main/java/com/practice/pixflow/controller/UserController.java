@@ -2,6 +2,7 @@ package com.practice.pixflow.controller;
 
 import com.practice.pixflow.dto.UpdateUserDTO;
 import com.practice.pixflow.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/user")
+@Tag(name = "User")
 public class UserController {
 
     @Autowired
