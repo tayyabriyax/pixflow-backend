@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/follow")
+@RequestMapping("/api/follow")
 @Tag(name = "Follow")
 public class FollowController {
 

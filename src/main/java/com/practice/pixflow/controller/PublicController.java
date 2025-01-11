@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/public")
 @Tag(name = "Public")
+@RequestMapping("/api/public")
 public class PublicController {
 
     @Autowired
@@ -33,7 +33,7 @@ public class PublicController {
     @PostMapping("/sign-in")
     public ResponseEntity<?> signIp(@RequestBody SignInDTO user){
         try{
-            return new ResponseEntity<>("JWT Token : " + userService.login(user), HttpStatus.CREATED);
+            return new ResponseEntity<>(userService.login(user), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
