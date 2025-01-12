@@ -35,7 +35,7 @@ public class PublicController {
         try{
             return new ResponseEntity<>(userService.login(user), HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Invalid Username or Password !", HttpStatus.NOT_FOUND);
         }
     }
 
