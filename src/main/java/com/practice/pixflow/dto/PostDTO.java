@@ -17,4 +17,12 @@ public class PostDTO {
 
     private String url;
 
+    private UserDetailsDTO auther;
+
+    public PostDTO(Integer id, String caption, String url) {
+        this.id = id;
+        this.caption = caption;
+        this.url = url;
+    }
+
 }

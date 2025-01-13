@@ -22,4 +22,14 @@ public class UserDetailsDTO {
 
     private List<PostDTO> posts;
 
+    public UserDetailsDTO(String userName,
+                          String email,
+                          String profilePic,
+                          String about) {
+        this.userName = userName;
+        this.email = email;
+        this.profilePic = profilePic;
+        this.about = about;
+    }
+
 }

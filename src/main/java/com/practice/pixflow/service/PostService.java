@@ -43,7 +43,7 @@ public class PostService {
 
             PostEntity newPost = new PostEntity();
             newPost.setCaption(post.getCaption());
-            newPost.setUrl(filePath);
+            newPost.setUrl("/upload/" + fileName);
 
             existedUser.getPosts().add(newPost);
             newPost.setUser(existedUser);
@@ -69,7 +69,7 @@ public class PostService {
             PostEntity newPost = new PostEntity();
             newPost.setId(post.getId());
             newPost.setCaption(post.getCaption());
-            newPost.setUrl(filePath);
+            newPost.setUrl("/upload/" + fileName);
 
             existedUser.getPosts().forEach(x -> {
                 if (Objects.equals(x.getId(), newPost.getId())) {
@@ -112,7 +112,11 @@ public class PostService {
                 .flatMap(following -> {
                     UserEntity userEntity = following.getFollowingId();
                     return userEntity.getPosts().stream()
-                            .map(post -> new PostDTO(post.getId(), post.getCaption(), post.getUrl()));
+                            .map(post -> new PostDTO(post.getId(), post.getCaption(), post.getUrl(),
+                                    new UserDetailsDTO(post.getUser().getUserName(),
+                                            post.getUser().getEmail(),
+                                            post.getUser().getProfilePic(),
+                                            post.getUser().getAbout())));
                 })
                 .toList();
     }

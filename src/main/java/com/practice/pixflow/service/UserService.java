@@ -66,7 +66,7 @@ public class UserService {
             existedUser.setUserName(user.getUserName());
             existedUser.setEmail(user.getEmail());
             existedUser.setPassword(passwordEncoder.encode(user.getPassword()));
-            existedUser.setProfilePic(filePath);
+            existedUser.setProfilePic("/upload/" + fileName);
             existedUser.setAbout(user.getAbout());
 
             userRepository.save(existedUser);
