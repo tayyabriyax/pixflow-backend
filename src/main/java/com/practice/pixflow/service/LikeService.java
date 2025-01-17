@@ -1,5 +1,8 @@
 package com.practice.pixflow.service;
 
+import com.practice.pixflow.dto.LikeDTO;
+import com.practice.pixflow.dto.PostDTO;
+import com.practice.pixflow.dto.UserDetailsDTO;
 import com.practice.pixflow.entity.LikeEntity;
 import com.practice.pixflow.entity.PostEntity;
 import com.practice.pixflow.entity.UserEntity;
@@ -52,11 +55,27 @@ public class LikeService {
         likeRepository.deleteByUserIdAndPostId(user, post);
     }
 
-    public Integer likesCount(Integer postId){
+    public LikeDTO likesCount(Integer postId){
         PostEntity post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found with id: " + postId));
 
-        return likeRepository.countByPostId(post);
+        LikeEntity like = likeRepository.findByPostId(post);
+        LikeDTO likeDTO = new LikeDTO();
+
+        likeDTO.setId(like.getId());
+        likeDTO.setPost(new PostDTO(
+                like.getPostId().getId(),
+                like.getPostId().getCaption(),
+                like.getPostId().getUrl()));
+        likeDTO.setUser(new UserDetailsDTO(
+                like.getUserId().getUserName(),
+                like.getUserId().getEmail(),
+                like.getUserId().getProfilePic(),
+                like.getUserId().getAbout()
+        ));
+        likeDTO.setLikesCount(likeRepository.countByPostId(post));
+
+        return likeDTO;
     }
 
 }

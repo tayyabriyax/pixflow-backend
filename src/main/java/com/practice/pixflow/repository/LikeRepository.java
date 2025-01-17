@@ -13,4 +13,6 @@ public interface LikeRepository extends CrudRepository<LikeEntity, Integer> {
 
     Integer countByPostId(PostEntity post);
 
+    LikeEntity findByPostId(PostEntity post);
+
 }

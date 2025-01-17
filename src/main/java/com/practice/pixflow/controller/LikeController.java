@@ -38,7 +38,7 @@ public class LikeController {
     @GetMapping("/like-count/{post_id}")
     public ResponseEntity<?> likesCount(@PathVariable(name = "post_id") Integer postId){
         try{
-            return new ResponseEntity<>("Post Likes : " + likeService.likesCount(postId),
+            return new ResponseEntity<>(likeService.likesCount(postId),
                     HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

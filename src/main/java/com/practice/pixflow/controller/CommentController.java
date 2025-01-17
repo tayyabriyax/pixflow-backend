@@ -51,7 +51,7 @@ public class CommentController {
     @GetMapping("/get-comment/{post_id}")
     public ResponseEntity<?> getComment(@PathVariable(name = "post_id") Integer postId) {
         try {
-            return new ResponseEntity<>(commentService.getComments(postId), HttpStatus.FOUND);
+            return new ResponseEntity<>(commentService.getComments(postId), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
