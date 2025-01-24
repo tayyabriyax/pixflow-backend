@@ -11,6 +11,6 @@ public class FollowingDTO {
 
     private Integer id;
 
-    private UserDetailsDTO followingId;
+    private UserDetailsDTO user;
 
 }

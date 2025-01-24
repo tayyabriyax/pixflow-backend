@@ -62,20 +62,29 @@ public class LikeService {
         LikeEntity like = likeRepository.findByPostId(post);
         LikeDTO likeDTO = new LikeDTO();
 
-        likeDTO.setId(like.getId());
-        likeDTO.setPost(new PostDTO(
-                like.getPostId().getId(),
-                like.getPostId().getCaption(),
-                like.getPostId().getUrl()));
-        likeDTO.setUser(new UserDetailsDTO(
-                like.getUserId().getUserName(),
-                like.getUserId().getEmail(),
-                like.getUserId().getProfilePic(),
-                like.getUserId().getAbout()
-        ));
-        likeDTO.setLikesCount(likeRepository.countByPostId(post));
+        if(like != null){
+            likeDTO.setId(like.getId());
+            likeDTO.setPost(new PostDTO(
+                    like.getPostId().getId(),
+                    like.getPostId().getCaption(),
+                    like.getPostId().getUrl()));
+            likeDTO.setUser(new UserDetailsDTO(
+                    like.getUserId().getUserName(),
+                    like.getUserId().getEmail(),
+                    like.getUserId().getProfilePic(),
+                    like.getUserId().getAbout()
+            ));
+            likeDTO.setLikesCount(likeRepository.countByPostId(post));
 
-        return likeDTO;
+            return likeDTO;
+        } else {
+            likeDTO.setId(0);
+            likeDTO.setPost(null);
+            likeDTO.setUser(null);
+            likeDTO.setLikesCount(0);
+
+            return likeDTO;
+        }
     }
 
 }
