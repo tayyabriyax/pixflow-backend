@@ -51,7 +51,24 @@ public class UserService {
         return jwtUtil.generateToken(userDetails.getUsername());
     }
 
-    public void updateUser(UpdateUserDTO user, MultipartFile profilePic){
+    public void updateUser(UpdateUserDTO user){
+        try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userName = authentication.getName();
+
+            UserEntity existedUser = userRepository.findUserByUserName(userName);
+
+            existedUser.setUserName(user.getUserName());
+            existedUser.setEmail(user.getEmail());
+            existedUser.setAbout(user.getAbout());
+
+            userRepository.save(existedUser);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateProfilePic(MultipartFile profilePic){
         try{
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userName = authentication.getName();
@@ -63,11 +80,7 @@ public class UserService {
             String filePath = absolutePath + "/" + fileName;
             profilePic.transferTo(new File(filePath));
 
-            existedUser.setUserName(user.getUserName());
-            existedUser.setEmail(user.getEmail());
-            existedUser.setPassword(passwordEncoder.encode(user.getPassword()));
             existedUser.setProfilePic("/upload/" + fileName);
-            existedUser.setAbout(user.getAbout());
 
             userRepository.save(existedUser);
         } catch (Exception e) {

@@ -18,20 +18,20 @@ public class UserController {
     public UserService userService;
 
     @PutMapping("/update-user")
-    public ResponseEntity<?> updateUser(@RequestParam("userName") String userName,
-                                        @RequestParam("email") String email,
-                                        @RequestParam("password") String password,
-                                        @RequestParam("about") String about,
-                                        @RequestParam("profilePic") MultipartFile profilePic){
+    public ResponseEntity<?> updateUser(@RequestBody UpdateUserDTO newUser){
         try{
-            UpdateUserDTO newUser = new UpdateUserDTO();
-            newUser.setUserName(userName);
-            newUser.setEmail(email);
-            newUser.setPassword(password);
-            newUser.setAbout(about);
-
-            userService.updateUser(newUser, profilePic);
+            userService.updateUser(newUser);
             return new ResponseEntity<>("User is Successfully Updated!", HttpStatus.OK);
+        } catch (Exception e) {
+            return  new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
+
+    @PutMapping("/update-profile-pic")
+    public ResponseEntity<?> updateProfilePic(@RequestParam("profilePic") MultipartFile profilePic){
+        try{
+            userService.updateProfilePic(profilePic);
+            return new ResponseEntity<>("Profile Pic is Successfully Updated!", HttpStatus.OK);
         } catch (Exception e) {
             return  new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
