@@ -1,5 +1,6 @@
 package com.practice.pixflow.service;
 
+import com.practice.pixflow.dto.LikeCountDTO;
 import com.practice.pixflow.dto.LikeDTO;
 import com.practice.pixflow.dto.PostDTO;
 import com.practice.pixflow.dto.UserDetailsDTO;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class LikeService {
@@ -55,36 +58,35 @@ public class LikeService {
         likeRepository.deleteByUserIdAndPostId(user, post);
     }
 
-    public LikeDTO likesCount(Integer postId){
+    public LikeCountDTO likesCount(Integer postId){
         PostEntity post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found with id: " + postId));
 
-        LikeEntity like = likeRepository.findByPostId(post);
-        LikeDTO likeDTO = new LikeDTO();
+        List<LikeEntity> like = likeRepository.findByPostId(post);
+        LikeCountDTO likeCount = new LikeCountDTO();
 
         if(like != null){
-            likeDTO.setId(like.getId());
-            likeDTO.setPost(new PostDTO(
-                    like.getPostId().getId(),
-                    like.getPostId().getCaption(),
-                    like.getPostId().getUrl()));
-            likeDTO.setUser(new UserDetailsDTO(
-                    like.getUserId().getUserName(),
-                    like.getUserId().getEmail(),
-                    like.getUserId().getProfilePic(),
-                    like.getUserId().getAbout()
-            ));
-            likeDTO.setLikesCount(likeRepository.countByPostId(post));
-
-            return likeDTO;
-        } else {
-            likeDTO.setId(0);
-            likeDTO.setPost(null);
-            likeDTO.setUser(null);
-            likeDTO.setLikesCount(0);
-
-            return likeDTO;
+            likeCount.setLikesCount(likeRepository.countByPostId(post));
+            likeCount.setLikes(
+                    like.stream().map(x -> {
+                        LikeDTO likeDTO = new LikeDTO();
+                        likeDTO.setId(x.getId());
+                        likeDTO.setPost(new PostDTO(
+                                x.getPostId().getId(),
+                                x.getPostId().getCaption(),
+                                x.getPostId().getUrl()
+                        ));
+                        likeDTO.setUser(new UserDetailsDTO(
+                                x.getUserId().getUserName(),
+                                x.getUserId().getEmail(),
+                                x.getUserId().getProfilePic(),
+                                x.getUserId().getAbout()
+                        ));
+                        return likeDTO;
+                    }).toList()
+            );
         }
+        return likeCount;
     }
 
 }

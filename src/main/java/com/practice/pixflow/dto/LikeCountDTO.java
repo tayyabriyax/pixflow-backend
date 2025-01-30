@@ -4,15 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LikeDTO {
+public class LikeCountDTO {
 
-    private Integer id;
+    private Integer likesCount;
 
-    private PostDTO post;
-
-    private UserDetailsDTO user;
+    private List<LikeDTO> likes;
 
 }
