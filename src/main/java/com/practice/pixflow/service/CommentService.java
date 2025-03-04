@@ -90,6 +90,7 @@ public class CommentService {
                             .toList();
 
                     UserDetailsDTO userDetailsDTO = new UserDetailsDTO(
+                            user.getId(),
                             user.getUserName(),
                             user.getEmail(),
                             user.getProfilePic(),

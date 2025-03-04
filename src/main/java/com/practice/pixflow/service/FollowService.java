@@ -64,6 +64,7 @@ public class FollowService {
                             .toList();
 
                     UserDetailsDTO userDetailsDTO = new UserDetailsDTO(
+                            user.getId(),
                             user.getUserName(),
                             user.getEmail(),
                             user.getProfilePic(),
@@ -95,6 +96,7 @@ public class FollowService {
                            .toList();
 
                    UserDetailsDTO userDetailsDTO = new UserDetailsDTO(
+                           user.getId(),
                            user.getUserName(),
                            user.getEmail(),
                            user.getProfilePic(),

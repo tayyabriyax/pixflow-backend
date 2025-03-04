@@ -77,6 +77,7 @@ public class BookmarkService {
                     x.getPost().getUrl()
                     ));
             bookmarkDTO.setUser(new UserDetailsDTO(
+                    x.getUser().getId(),
                     x.getUser().getUserName(),
                     x.getUser().getEmail(),
                     x.getUser().getProfilePic(),

@@ -25,7 +25,7 @@ public class FollowController {
         }
     }
 
-    @DeleteMapping("/unfollow/{following_id}")
+    @PostMapping("/unfollow/{following_id}")
     public ResponseEntity<?> unFollowUser(@PathVariable(name = "following_id") Integer followingId ){
         try{
             followService.unFollowUser(followingId);

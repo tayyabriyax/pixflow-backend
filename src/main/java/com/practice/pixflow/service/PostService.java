@@ -113,7 +113,9 @@ public class PostService {
                     UserEntity userEntity = following.getFollowingId();
                     return userEntity.getPosts().stream()
                             .map(post -> new PostDTO(post.getId(), post.getCaption(), post.getUrl(),
-                                    new UserDetailsDTO(post.getUser().getUserName(),
+                                    new UserDetailsDTO(
+                                            post.getUser().getId(),
+                                            post.getUser().getUserName(),
                                             post.getUser().getEmail(),
                                             post.getUser().getProfilePic(),
                                             post.getUser().getAbout())));

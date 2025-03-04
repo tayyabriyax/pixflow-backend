@@ -46,8 +46,8 @@ public class UserController {
         }
     }
 
-    @GetMapping("search-user/{keyword}")
-    public ResponseEntity<?> getSearchedUsers(@PathVariable String keyword){
+    @GetMapping("search-user")
+    public ResponseEntity<?> getSearchedUsers(@RequestParam("keyword") String keyword){
         try{
             return new ResponseEntity<>(userService.getSearchedUsers(keyword), HttpStatus.OK);
         } catch (Exception e) {

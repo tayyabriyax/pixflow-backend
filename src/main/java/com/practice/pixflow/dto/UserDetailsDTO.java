@@ -12,6 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 public class UserDetailsDTO {
 
+    private Integer id;
+
     private String userName;
 
     private String email;
@@ -22,10 +24,12 @@ public class UserDetailsDTO {
 
     private List<PostDTO> posts;
 
-    public UserDetailsDTO(String userName,
+    public UserDetailsDTO(Integer id,
+                          String userName,
                           String email,
                           String profilePic,
                           String about) {
+        this.id = id;
         this.userName = userName;
         this.email = email;
         this.profilePic = profilePic;

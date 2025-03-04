@@ -93,6 +93,7 @@ public class UserService {
 
         UserEntity existedUser = userRepository.findUserByUserName(userName);
         UserDetailsDTO userDetails = new UserDetailsDTO();
+        userDetails.setId(existedUser.getId());
         userDetails.setUserName(existedUser.getUserName());
         userDetails.setEmail(existedUser.getEmail());
         userDetails.setProfilePic(existedUser.getProfilePic());
@@ -111,14 +112,13 @@ public class UserService {
     }
 
     public List<UserDetailsDTO> getSearchedUsers(String keyword) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userName = authentication.getName();
 
         List<UserEntity> users = userRepository.findAll();
 
         List<UserDetailsDTO> filteredUsers = users.stream()
                 .filter(user -> user.getUserName().toLowerCase().contains(keyword.toLowerCase()))
                 .map(user -> new UserDetailsDTO(
+                        user.getId(),
                         user.getUserName(),
                         user.getEmail(),
                         user.getProfilePic(),

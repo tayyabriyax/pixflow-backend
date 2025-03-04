@@ -77,6 +77,7 @@ public class LikeService {
                                 x.getPostId().getUrl()
                         ));
                         likeDTO.setUser(new UserDetailsDTO(
+                                x.getUserId().getId(),
                                 x.getUserId().getUserName(),
                                 x.getUserId().getEmail(),
                                 x.getUserId().getProfilePic(),
