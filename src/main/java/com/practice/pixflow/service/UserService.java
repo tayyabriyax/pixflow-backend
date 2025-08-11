@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Component
@@ -122,10 +123,13 @@ public class UserService {
     }
 
     public List<UserDetailsDTO> getSearchedUsers(String keyword) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
 
         List<UserEntity> users = userRepository.findAll();
 
         List<UserDetailsDTO> filteredUsers = users.stream()
+                .filter(user -> !Objects.equals(user.getUserName(), userName))
                 .filter(user -> user.getUserName().toLowerCase().contains(keyword.toLowerCase()))
                 .map(user -> new UserDetailsDTO(
                         user.getId(),
