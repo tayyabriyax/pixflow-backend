@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class UserService {
@@ -67,25 +68,34 @@ public class UserService {
         }
     }
 
-    public void updateProfilePic(MultipartFile profilePic){
-        try{
+    public void updateProfilePic(MultipartFile profilePic) {
+        try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userName = authentication.getName();
 
             UserEntity existedUser = userRepository.findUserByUserName(userName);
 
-            String  fileName = profilePic.getOriginalFilename();
-            String absolutePath = new File("src/main/resources/static/upload/").getAbsolutePath();
-            String filePath = absolutePath + "/" + fileName;
+            String uploadDir = System.getProperty("user.dir") + "/uploads/";
+            File directory = new File(uploadDir);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            String originalFileName = profilePic.getOriginalFilename();
+            String uniqueFileName = UUID.randomUUID().toString().replace("-", "") + "_" + originalFileName;
+
+            String filePath = uploadDir + uniqueFileName;
             profilePic.transferTo(new File(filePath));
 
-            existedUser.setProfilePic("/upload/" + fileName);
+            existedUser.setProfilePic("/upload/" + uniqueFileName);
 
             userRepository.save(existedUser);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
 
     public UserDetailsDTO getUserDetails(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

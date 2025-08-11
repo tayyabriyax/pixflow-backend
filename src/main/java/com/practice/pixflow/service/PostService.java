@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Component
 public class PostService {
@@ -36,23 +37,32 @@ public class PostService {
 
             UserEntity existedUser = userRepository.findUserByUserName(userName);
 
-            String fileName = postFile.getOriginalFilename();
-            String absolutePath = new File("src/main/resources/static/upload/").getAbsolutePath();
-            String filePath = absolutePath + "/" + fileName;
+            String uploadDir = System.getProperty("user.dir") + "/uploads/";
+            File directory = new File(uploadDir);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            String originalFileName = postFile.getOriginalFilename();
+            String uniqueFileName = UUID.randomUUID().toString().replace("-", "") + "_" + originalFileName;
+
+            String filePath = uploadDir + uniqueFileName;
             postFile.transferTo(new File(filePath));
 
             PostEntity newPost = new PostEntity();
             newPost.setCaption(post.getCaption());
-            newPost.setUrl("/upload/" + fileName);
+            newPost.setUrl("/upload/" + uniqueFileName); // frontend access
 
             existedUser.getPosts().add(newPost);
             newPost.setUser(existedUser);
 
             postRepository.save(newPost);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
 
     public void updatePost(EditPostDTO post, MultipartFile postFile) {
         try {
