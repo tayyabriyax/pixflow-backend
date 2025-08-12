@@ -128,7 +128,8 @@ public class PostService {
                                             post.getUser().getUserName(),
                                             post.getUser().getEmail(),
                                             post.getUser().getProfilePic(),
-                                            post.getUser().getAbout())));
+                                            post.getUser().getAbout())
+                            , post.getCreatedAt()));
                 })
                 .toList();
     }

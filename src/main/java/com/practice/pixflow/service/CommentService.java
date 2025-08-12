@@ -98,7 +98,7 @@ public class CommentService {
                             posts
                     );
 
-                    return new GetCommentDTO(comment.getContent(), userDetailsDTO);
+                    return new GetCommentDTO(comment.getContent(), userDetailsDTO, comment.getCreatedAt(), comment.getUpdatedAt());
                 }).toList();
 
     }

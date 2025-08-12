@@ -19,6 +19,8 @@ public class PostDTO {
 
     private UserDetailsDTO auther;
 
+    private LocalDateTime createdAt;
+
     public PostDTO(Integer id, String caption, String url) {
         this.id = id;
         this.caption = caption;
